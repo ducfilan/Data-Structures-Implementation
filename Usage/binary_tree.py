@@ -15,6 +15,10 @@ class MyTestCase(unittest.TestCase):
         r.insert_right('c')
         self.assertEqual(r.get_right_child().get_root_value(), 'c')
 
+        r.in_order_traverse(r)
+        r.pre_order_traverse(r)
+        r.post_order_traverse(r)
+
         r.get_right_child().set_root_value('hello')
         self.assertEqual(r.get_right_child().get_root_value(), 'hello')
 
