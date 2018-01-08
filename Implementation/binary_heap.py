@@ -35,4 +35,16 @@ class BinaryHeap(object):
         self.heap_list[1] = self.heap_list[self.current_size]
         self.heap_list.pop()
         self.current_size -= 1
+        self.perc_down(1)
         return del_val
+
+    def build_heap(self, a_list):
+        i = len(a_list) // 2
+        self.current_size = len(a_list)
+        self.heap_list = [0] + a_list[:]
+        while i > 0:
+            self.perc_down(i)
+            i = i - 1
+
+    def output_heap(self):
+        print(' '.join(map(str, self.heap_list)))
