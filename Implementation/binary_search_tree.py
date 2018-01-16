@@ -105,4 +105,79 @@ class BinarySearchTree(object):
 
     def __contains__(self, key):
         return True if self._get(key, self.root) else False
-    
+
+    def delete(self, key):
+        if self.size > 1:
+            node_to_remove = self._get(key, self.root)
+            if node_to_remove:
+                self.remove(node_to_remove)
+                self.size -= 1
+            else:
+                raise KeyError('Error! Key is not found in the tree!')
+        elif self.size == 1 and self.root.key == key:
+            self.root = None
+            self.size = 0
+        else:
+            raise KeyError('Error! Key is not found in the tree!')
+
+    def __del__(self, key):
+        self.delete(key)
+
+    def find_min_child(self, current_node):
+        while current_node.left_child:
+            current_node = current_node.left_child
+
+        return current_node
+
+    def remove(self, node_to_remove):
+        if node_to_remove.is_leaf():
+            if node_to_remove == node_to_remove.parent.left_child:
+                node_to_remove.parent.left_child = None
+            else:
+                node_to_remove.parent.right_child = None
+        elif not node_to_remove.has_both_children():
+            if node_to_remove.parent:
+                if node_to_remove.is_left_child():
+                    if node_to_remove.has_left_child():
+                        node_to_remove.parent.left_child = node_to_remove.left_child
+                        node_to_remove.left_child.parent = node_to_remove.parent
+                    else:
+                        node_to_remove.parent.left_child = node_to_remove.right_child
+                        node_to_remove.right_child.parent = node_to_remove.parent
+                else:
+                    if node_to_remove.has_left_child():
+                        node_to_remove.parent.right_child = node_to_remove.left_child
+                        node_to_remove.left_child.parent = node_to_remove.parent
+                    else:
+                        node_to_remove.parent.right_child = node_to_remove.right_child
+                        node_to_remove.right_child.parent = node_to_remove.parent
+            else:
+                node_to_remove.replace_node_data(node_to_remove.left_child.key,
+                                                 node_to_remove.left_child.payload,
+                                                 node_to_remove.right_child,
+                                                 node_to_remove.left_child)
+        else:
+            node_to_replace = self.find_min_child(node_to_remove.right_child)
+            if node_to_replace.is_leaf():
+                if node_to_replace.is_left_child():
+                    node_to_replace.parent.left_child = None
+                else:
+                    node_to_replace.parent.right_child = None
+            else:
+                if node_to_replace.has_right_child():
+                    node_to_replace.right_child.parent = node_to_replace.parent
+                    if node_to_replace.is_left_chid():
+                        node_to_replace.parent.left_child = node_to_replace.right_child
+                    else:
+                        node_to_replace.parent.right_child = node_to_replace.right_child
+                else:
+                    node_to_replace.left_child.parent = node_to_replace.parent
+                    if node_to_replace.is_left_chid():
+                        node_to_replace.parent.left_child = node_to_replace.left_child
+                    else:
+                        node_to_replace.parent.right_child = node_to_replace.left_child
+
+        node_to_remove.key = node_to_replace.key
+        node_to_remove.payload = node_to_replace.payload
+
+        self.size -= 1
