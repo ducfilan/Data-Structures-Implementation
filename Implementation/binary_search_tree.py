@@ -40,6 +40,16 @@ class TreeNode(object):
         if self.has_right_child():
             self.right_child.parent = self
 
+    def __iter__(self):
+        if self:
+            if self.has_left_child():
+                for element in self.left_child:
+                    yield element
+            yield self.key
+            if self.has_right_child():
+                for element in self.right_child:
+                    yield element
+
 
 class BinarySearchTree(object):
     def __init__(self):
