@@ -76,17 +76,17 @@ class BinarySearchTree(object):
     def _put(self, key, val, current_node):
         if key < current_node.key:
             if current_node.has_left_child():
-                self._put(key, val, self.left_child)
+                self._put(key, val, current_node.left_child)
             else:
                 current_node.left_child = TreeNode(key, val, parent=current_node)
         else:
             if current_node.has_right_child():
-                self._put(key, val, self.right_child)
+                self._put(key, val, current_node.right_child)
             else:
                 current_node.right_child = TreeNode(key, val, parent=current_node)
 
     def __setitem__(self, key, value):
-        self._put(key, value)
+        self.put(key, value)
 
     def get(self, key):
         if self.root:
@@ -130,7 +130,7 @@ class BinarySearchTree(object):
         else:
             raise KeyError('Error! Key is not found in the tree!')
 
-    def __del__(self, key):
+    def __delitem__(self, key):
         self.delete(key)
 
     def find_min_child(self, current_node):
