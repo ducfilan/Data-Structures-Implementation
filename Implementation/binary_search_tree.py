@@ -189,5 +189,3 @@ class BinarySearchTree(object):
 
         node_to_remove.key = node_to_replace.key
         node_to_remove.payload = node_to_replace.payload
-
-        self.size -= 1
