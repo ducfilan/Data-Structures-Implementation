@@ -1,5 +1,6 @@
 from Implementation.Graph.Vertex import Vertex
 
+
 class Graph(object):
     def __init__(self):
         self.vertices = {}
@@ -28,4 +29,4 @@ class Graph(object):
         if to_key not in self.vertices:
             self.add_vertex(to_key)
 
-        self.vertices[from_key].add_neighbor(to_key, cost)
+        self.vertices[from_key].add_neighbor(self.vertices[to_key], cost)
