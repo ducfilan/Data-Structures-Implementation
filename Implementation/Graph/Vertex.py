@@ -26,3 +26,9 @@ class Vertex(object):
 
     def set_distance(self, d):
         self.distance = d
+
+    def get_distance(self):
+        return self.distance
+
+    def get_connections(self):
+        return self.vertices_connected_to.keys()
