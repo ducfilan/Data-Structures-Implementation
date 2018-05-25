@@ -1,10 +1,12 @@
 class TrieNode:
     def __init__(self, val, is_end=False):
         self.value = val
-        self.is_end = is_end
         self.connected_nodes = []
+        self.is_end = is_end
+		self.parent = None
 
     def set_connected_to_node(self, new_node):
+		new_node.set_parent(self)
         self.connected_nodes.append(new_node)
 
     def get_connected_nodes(self):
@@ -15,7 +17,9 @@ class TrieNode:
 
     def set_is_end(self, is_end):
         self.is_end = is_end
-
+			
+	def set_parent(self, parent_node):
+		self.parent = parent_node
 
 root = TrieNode('*')
 
