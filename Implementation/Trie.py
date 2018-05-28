@@ -12,8 +12,8 @@ class Trie:
 	def __init__(self, root):
 		self.root = root
 
-	def build(self, words):
-		for word in words:
+	def build(self, dictionary):
+		for word in dictionary:
 			current_parent_node = self.root
 
 			for i, c in enumerate(word):
@@ -55,20 +55,12 @@ class Trie:
 		start_node = self.root
 
 		for c in prefix:
-			start_node = next(filter(lambda node: node.value == c, start_node.connected_nodes), None)
+			start_node = next(
+			    filter(lambda node: node.value == c,
+			           start_node.connected_nodes), None)
 			if not start_node:
 				return []
 
 		dfs(start_node)
 
 		return words
-
-
-trie = Trie(TrieNode('*'))
-
-trie.build([
-    "castle", "cost", "cast", "constant", "love", "lost", "last", "less",
-    "lotus", "lasting"
-])
-
-print(*trie.find_words_start_with('c'))
