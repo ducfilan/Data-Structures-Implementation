@@ -3,10 +3,8 @@ class TrieNode:
         self.value = val
         self.connected_nodes = []
         self.is_end = is_end
-        self.parent = None
 
     def set_connected_to_node(self, new_node):
-        new_node.set_parent(self)
         self.connected_nodes.append(new_node)
 
     def get_connected_nodes(self):
@@ -18,20 +16,21 @@ class TrieNode:
     def set_is_end(self, is_end):
         self.is_end = is_end
 
-    def set_parent(self, parent_node):
-        self.parent = parent_node
+    def get_is_end(self):
+        return self.is_end
 
 
 root = TrieNode('*')
 
-words = ["cost", "cast", "constant", "love", "lost", "last"]
+words = ["cost", "cast", "constant", "love", "lost", "last", "less", "lotus", "lasting"]
 
 
 def build_trie(root, word):
     current_parent_node = root
-    nodes_dict = {node.get_value(): node for node in current_parent_node.get_connected_nodes()}
 
     for i, c in enumerate(word):
+        nodes_dict = {node.get_value(): node for node in current_parent_node.get_connected_nodes()}
+
         if c not in nodes_dict:
             new_node = TrieNode(c, i + 1 == len(word))
             current_parent_node.set_connected_to_node(new_node)
@@ -49,29 +48,33 @@ for word in words:
 
 def find_words_start_with(prefix):
     words = []
+
+    def dfs(node, word=''):
+        if not word:
+            word = prefix[:-1]
+
+        word += node.get_value()
+			
+        children = node.get_connected_nodes()
+        
+        if node.get_is_end():
+            words.append(word)
+
+        if not children:
+            word = ''
+        else:
+            for child in children:
+                dfs(child, word)
+
     start_node = root
 
     for c in prefix:
         start_node = next(filter(lambda node: node.get_value() == c, start_node.get_connected_nodes()), None)
 
-    def dfs(node):
-        word = prefix
-        children = node.get_connected_nodes()
-
-        if not children:
-            words.append(word)
-        else:
-            for child in children:
-                dfs(child)
-
-    current_parent_node = root
-    nodes_dict = {node.get_value(): node for node in current_parent_node.get_connected_nodes()}
-
-    for i, c in enumerate(prefix):
-        if c in nodes_dict:
-            current_parent_node = nodes_dict[c]
-
-    for node in current_parent_node.get_connected_nodes():
-        words.append(prefix + node.get_value())
+    dfs(start_node)
 
     return words
+
+
+for word in find_words_start_with('l'):
+    print(word)
